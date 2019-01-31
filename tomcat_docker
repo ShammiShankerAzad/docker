@@ -1,0 +1,28 @@
+FROM centos
+RUN useradd -d /home/tom -m -s /bin/bash tom
+
+COPY TOMCAT/jre-8u45-linux-x64.rpm /home/tom/jre-8u45-linux-x64.rpm
+RUN rpm -ivh /home/tom/jre-8u45-linux-x64.rpm
+
+COPY TOMCAT/apache-tomcat-6.0.44 /home/tom/apache-tomcat-6.0.44
+
+#Change Permission
+RUN chown -R tom:tom /home/tom/jre-8u45-linux-x64.rpm
+RUN chmod -R 775 /home/tom/apache-tomcat-6.0.44
+
+#Set User
+USER tom
+
+#Set WorkingDir
+WORKDIR /home/tom
+
+#Set environment variables
+ENV JAVA_HOME=/usr/java/jre1.8.0_45
+ENV CATALINA_HOME=/home/tom/apache-tomcat-6.0.44
+
+#Expose Port
+EXPOSE 8080
+
+#Run Tomcat
+#CMD /home/tom/apache-tomcat-6.0.44/bin/catalina.sh run
+
